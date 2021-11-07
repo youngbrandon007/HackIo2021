@@ -1,0 +1,16 @@
+{
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "rxdata.azurewebsites",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "rxdata.azurewebsites",
+  "start_url": "/",
+  "theme_color": "#DFEFFA",
+  "icons": [{
+    "src": "/images/bread.png",
+    "type": "image/png",
+    "sizes": "512x512"
+  }]
+}

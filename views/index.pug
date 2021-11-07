@@ -1,0 +1,235 @@
+extends layout
+
+block content
+  nav.noPrint.navbar.navbar-expand-lg.navbar-dark.bg-dark
+    .container-fluid
+      a.navbar-brand(href="#") Banana Bread
+      button.navbar-toggler(type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation")
+      ul.navbar-nav.me-auto 
+        li.nav-item 
+          a.nav-link(href="#") Veeva Systems Challenge 
+      //-   span.navbar-toggler-icon
+      //- .collapse.navbar-collapse 
+      //-   ul.navbar-nav.me-auto 
+      //-     li.nav-item 
+      //-       a.nav-link(href="#") Veeva Systems Challenge
+  //.container.p-1
+  .m-5.alert-primary
+    .row.noPrint
+      .col
+        .tab.bg-secondary.border-0
+          button#tab-doctor-btn.btn.btn-outline-primary.tablinks(onclick='setTab(event, "tab-doctor");') Doctors
+          button#tab-product-btn.btn.btn-outline-primary.tablinks(onclick='setTab(event, "tab-product");') Products
+          button#tab-search-btn.btn.btn-outline-primary.tablinks(onclick='setTab(event, "tab-table");') Table
+          button#tab-search-btn.btn.btn-outline-primary.tablinks(onclick='setTab(event, "tab-map");') Map
+          button#tab-search-btn.btn.btn-outline-primary.tablinks(onclick='setTab(event, "tab-search");') Search
+          button#tab-search-btn.btn.btn-outline-primary.tablinks(onclick='setTab(event, "tab-report");') Report
+    .row
+      .col.border-top.border-primary.alert-primary
+        #tab-doctor.tabcontent
+          .m-5
+            .row
+              .col-9(style="min-width: 500px;")
+                canvas#scatterChart
+              .col-3
+                .card.bg-transparent.border-primary
+                  .card-header 
+                    h6 Filters
+                  .card-body
+                    p
+                      | Click on a Product in the Legend to filter out that dataset
+                  .card-header 
+                    h6 Ranges
+                  .card-body 
+                    form.m-0(action="#")
+                      fieldset 
+                        .form-group.row
+                          label.col-form-label.text-right(for="") X
+                          .col-sm-4
+                            input#doc-range-x-1.form-control-plaintext.bg-light(type="text" value="")
+                          
+                          label.col-sm-4.col-form-label.text-center(for="") to
+                          .col-sm-4
+                            input#doc-range-x-2.form-control-plaintext.bg-light(type="text" value="")
+                        .form-group.row
+                          label.col-form-label.text-right(for="") Y
+                          .col-sm-4
+                            input#doc-range-y-1.col-sm-4.form-control-plaintext.bg-light(type="text" value="")
+                          
+                          label.col-sm-4.col-form-label.text-center(for="") to
+                          .col-sm-4
+                            input#doc-range-y-2.form-control-plaintext.bg-light(type="text" value="")
+                      .row.mt-3
+                        .col-sm-12
+                          button#doc-range-apply.w-100.btn.btn-success(type="submit") Apply
+        #tab-product.tabcontent 
+          .m-0
+            .row 
+              .col-6
+                canvas#productChartNRx
+              .col-6
+                canvas#productChartTRx
+              //- .col-4
+              //-   .card.bg-transparent.border-primary
+              //-     .card-header 
+              //-       h6 Filters
+              //-     .card-body
+              //-       .form-check
+              //-         input.form-check-input(type="checkbox" value="" id="flexCheckDefault")
+              //-         label.form-check-label(for="flexCheckDefault") Default checkbox
+            //- check
+            //- .row 
+            //-   .col-6
+            //-     canvas#productChartTRx
+        #tab-search.tabcontent 
+          .container 
+            .row 
+              .col-12
+                .p-3
+                h1 Doctor Search
+                .p-3
+            .row 
+              .col-6
+                form(action="#")
+                  fieldset 
+                    .form-group.row.p-1
+                      label.col-sm-3.col-form-label.text-right(for="searchId") ID Number
+                      .col-sm-6
+                        input.form-control-plaintext.bg-light(type="text" value="" id="s-search-id")
+                      
+                    .form-group.row.p-1
+                      label.col-sm-3.col-form-label.text-right(for="searchName") Or Name
+                      .col-sm-6
+                        input.form-control-plaintext.bg-light(type="text" value="" id="s-search-name")
+                  .row.p-1
+                    .col-sm-3 
+                    .col-sm-6
+                      button#s-submit.w-100.btn.btn-success(type="submit") Search
+                .row 
+                  canvas#searchGraphNRx
+                  canvas#searchGraphTRx
+              .col-lg-6
+                table.table.table-hover.table-secondary 
+                  thead 
+                    tr
+                      th(scope="col") Full Name 
+                      th#s-name(scope="col") 
+                  tbody
+                    tr
+                      th(scope="row") ID 
+                      th#s-id
+                    tr
+                      th(scope="row") Product 
+                      th#s-product
+                    tr
+                      th(scope="row") Location 
+                      th#s-state
+                    tr
+                      th(scope="row") Average NRx 
+                      th#s-average-NRx
+                    tr
+                      th(scope="row") Average TRx 
+                      th#s-average-TRx
+        #tab-table.tabcontent 
+          h1 Table
+          .card.bg-transparent.border-primary
+            .card-header 
+              h6 Filters
+            .card-body
+              .row
+                .col-6
+                  #table-checkboxes
+                .col-6 
+                  .form-group.row
+                    label.col-form-label.text-right(for="table-rows") Number of Rows
+                    .col-sm-4
+                      input#table-rows.form-control-plaintext.bg-light(onchange="tableObj.updateTable(null);" type="text" value="")
+                          
+          .m-2
+          #table-output
+        #tab-map.tabcontent
+          h1 Map
+          .row
+            .col-lg-9
+              .row
+                #map(style="width: 0.8*80vw; height: 0.8*54.19vw;")
+            .col-sm-3
+              .card.bg-transparent.border-primary
+                .card-header 
+                  h6 Filters
+                .card-body
+                  .form-check
+                    input.form-check-input(onchange='makeMap();' type="checkbox" value="" id="map-population")
+                    label.form-check-label(for="map-population") Per Population
+                  .row
+                    .col-2
+                      label.form-check-label(for="map-TRxOrNRx") TRx
+                    
+                    .col-2
+                      .form-check.form-switch
+                        input.form-check-input(onchange='makeMap();' type="checkbox" id="map-TRxOrNRx")
+                    
+                    .col-2
+                      label.form-check-label(for="map-TRxOrNRx") NRx
+              .p-3
+              .card.bg-transparent.border-primary
+                .card-header
+                  h6 Legend 
+                .card-body
+                  div(style="height: 10px; width:100%; background: linear-gradient(90deg, rgba(0,255,0,1) 0%, rgba(255,255,255,1) 100%);") 
+                  .row 
+                    .col-3
+                      p 100%
+                    .col-6 
+                      p.text-center Value
+                    .col-3
+                      p.text-center 0%
+              .p-3
+              .card.bg-transparent.border-primary
+                .card-header 
+                  h6 Selected
+                .card-body
+                  #clicked-state
+
+          //- <div id="map" style="width: 300px; height: 300px;"></div>
+        #tab-report.tabcontent
+          buttton.noPrint.btn.btn-success(onclick="print();") Print
+          #print-content
+            .m-5
+            h1 Prescription Report Summary
+            p Banana Bread
+            .m-5
+            h6 Growth Multiplier (Percent Diff. from first to last month)
+            #report-growth
+            .m-5
+            p#report-trending Best Trend (highest slope of linear reg.): 1.2 by Product
+            p#report-top-sales Top Sale (highest selling product): 1.2 by Product
+            p#report-projection Projection (six month ->): 1.2
+
+            .m-5
+            .m-5
+            div(style="max-width: 600px;")
+              canvas#scatterChartCopy
+              footer
+              canvas#productChartTRxCopy
+              canvas#productChartNRxCopy
+              footer 
+              .m-5
+              h6 Comparitive Totals of Products
+              div(style="transform-origin: top left;transform: scale(0.6, 0.6);")
+                div#map2
+                .card.bg-transparent.border-primary
+                .card-header
+                  h6 Legend 
+                .card-body
+                  div(style="height: 10px; width:100%; background: linear-gradient(90deg, rgba(0,255,0,1) 0%, rgba(255,255,255,1) 100%); -webkit-print-color-adjust: exact;") 
+                  .row 
+                    .col-3
+                      p 100%
+                    .col-6 
+                      p.text-center Value
+                    .col-3
+                      p.text-center 0%
+
+          
+
